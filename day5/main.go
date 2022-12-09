@@ -7,6 +7,6 @@ func greet(name string) {
 }
 
 func main() {
-	greet("Gopher")
+	go greet("Gopher")
 	fmt.Println("Done")
 }
