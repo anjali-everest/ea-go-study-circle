@@ -28,6 +28,11 @@ func cos(a float64) float64 {
 	return math.Round(cosVal*100)/100
 }
 
+func tan(a float64) float64 {
+	tanVal := math.Tan(a)
+	return math.Round(tanVal*100)/100
+}
+
 func squareRoot(a float64) float64 {
 	return math.Sqrt(a)
 }

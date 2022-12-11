@@ -51,3 +51,10 @@ func TestCos(t *testing.T){
 		t.Errorf("Cos failed")
 	}
 }
+
+func TestTan(t *testing.T){
+	result := tan(90)
+	if result != 1 {
+		t.Errorf("Tan failed")
+	}
+}
