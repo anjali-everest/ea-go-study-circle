@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 )
@@ -18,35 +19,27 @@ type Job struct {
 
 type Result struct {
 	Job    Job
-	status string
+	Status string
 }
 
 func execute(job Job, channel chan Result) {
 	log.Println("executing ", job.Name)
-	channel <- Result{Job: job, status: "SUCCESS"}
+	channel <- Result{Job: job, Status: "SUCCESS"}
 }
 
-func main() {
-	jsonFile, err := os.Open("jobs.json")
-	channel := make(chan Result)
+func readJobs() Jobs {
+	jsonFile, err := os.Open("io/jobs.json")
 	if err != nil {
 		log.Println(err)
 	}
 	log.Println("Successfully Opened jobs.json")
-
 	byteValue, _ := io.ReadAll(jsonFile)
-
 	var jobs Jobs
-
 	json.Unmarshal(byteValue, &jobs)
+	return jobs
+}
 
-	for i := 0; i < len(jobs.Jobs); i++ {
-		go execute(jobs.Jobs[i], channel)
-	}
-
-	var data []Result
-	for i := 0; i < len(jobs.Jobs); i++ {
-		data = append(data, <-channel)
-	}
-	log.Println(data)
+func writeSuccessfulJobData(data []Result) {
+	marshaled_data, _ := json.MarshalIndent(data, "", "  ")
+	_ = ioutil.WriteFile("io/status.json", marshaled_data, 0644)
 }
