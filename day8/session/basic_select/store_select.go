@@ -1,4 +1,4 @@
-package session
+package basic_select
 
 type store interface {
 	sell() string
